@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('07-mongo:server');
+var debug = require('debug')('entregable-mongo-express:server');
 var http = require('http');
 
 /**

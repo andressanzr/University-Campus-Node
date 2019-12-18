@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+const Cryptr = require("cryptr");
+const cryptr = new Cryptr("t45AS45asf");
+
 const userSchema = Schema(
   {
     nombre: { type: String, required: true },
@@ -30,10 +33,25 @@ module.exports = {
   findUsers: async () => {
     return await User.find();
   },
-  deleteUser: (id) =>{
-    User.deleteOne({_id:id}, (err)=>{
+  loginUser: async (email, pass) => {
+    var findedUser;
+    await User.findOne({ email: email }, (err, user) => {
+      findedUser = user;
+    });
+    if(findedUser!=null){
+      var passDecrypted = cryptr.decrypt(findedUser.pass);
+    }
+    if(pass === passDecrypted){
+      return findedUser;
+    }else{
+      return null;
+    }
+    
+  },
+  deleteUser: id => {
+    User.deleteOne({ _id: id }, err => {
       console.log(err);
     });
-    console.log("item deleted")
+    console.log("item deleted");
   }
 };

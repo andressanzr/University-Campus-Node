@@ -1,0 +1,12 @@
+<%- include("./layouts/layout", {title: "Sign up"}); -%>
+<h2>Create User</h2>
+<div class="container">
+  <form action="/user/insert" method="post">
+    Nombre: <input type="text" name="nombre" id="" /> Apellido:
+    <input type="text" name="apellido" id="" /> Email:
+    <input type="text" name="email" id="" /> Pass:
+    <input type="text" name="pass" id="" /> Rol:
+    <input type="number" name="rol" id="" />
+    <input type="submit" value="Submit" />
+  </form>
+</div>

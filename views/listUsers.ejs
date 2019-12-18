@@ -1,14 +1,9 @@
 <h2>List Users</h2>
-<p style="color: red;font-size:3em">{{ err }}</p>
-{% users.map( user=>{ %>
-<div class="container">
+<p style="color: red;font-size:3em"><%err%></p>
 
-    <p> {{user._id}} </p>
-    <p> {{user.nombre}} </p>
-    <p> {{user.apellido}} </p>
-    <p> {{user.email}} </p>
-    <p> {{user.pass}} </p>
-    <p> {{user.rol}} </p>
+<% users.map( user=>{ %>
+<div class="container">
+    <%- include("./templates/userList", {user:user}); -%>
     <form action="/users/edit" method="post">
         <input type="hidden" name="edit" value="{{this._id}}">
         <button type="submit">Edit</button>
@@ -18,4 +13,4 @@
         <button type="submit">Delete</button>
     </form>
 </div>
-{% }); %}
+<% }); %>

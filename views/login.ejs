@@ -1,0 +1,8 @@
+<%- include("./layouts/layout", {title:"login"}); %>
+<div class="container">
+  <form action="/user/login" method="post">
+    <label for="email">Email: </label><input type="text" name="email" id="" />
+    <label for="pass">Password: </label><input type="text" name="pass" id="" />
+    <button type="submit">Login</button>
+  </form>
+</div>

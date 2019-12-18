@@ -1,17 +1,19 @@
 var createError = require("http-errors");
 var express = require("express");
+var session = require("express-session");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
+var userRouter = require("./routes/user");
 
 var ejs = require("ejs");
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 // connect to MongoDB
 var url = "mongodb://localhost:27017/entregable";
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology:true });
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
 var db = mongoose.connection;
 
@@ -21,9 +23,17 @@ db.once("open", () => {
 
 var app = express();
 
+//session set up
+app.use(
+  session({
+    secret: "shtyo12poi",
+    resave: true,
+    saveUninitialized: false,
+    cookie: { secure: true }
+  })
+);
+
 // view engine setup
-app.engine("ejs");
-app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(logger("dev"));
@@ -33,6 +43,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+app.use("/user", userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
