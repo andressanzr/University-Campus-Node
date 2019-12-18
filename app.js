@@ -5,6 +5,8 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+var flash = require("express-flash");
+
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
 
@@ -24,23 +26,30 @@ db.once("open", () => {
 var app = express();
 
 //session set up
+
+//no compatible con flash
 app.use(
   session({
     secret: "shtyo12poi",
     resave: true,
     saveUninitialized: false,
-    cookie: { secure: true }
+    cookie: { secure: false }
   })
 );
 
 // view engine setup
 app.set("view engine", "ejs");
 
+
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('keyboard cat'));
+app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(flash());
 
 app.use("/", indexRouter);
 app.use("/user", userRouter);

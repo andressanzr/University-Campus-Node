@@ -30,6 +30,15 @@ module.exports = {
 
     userCreate.save();
   },
+  checkRepeatedEmail: async emailSearch => {
+    var result;
+    await User.find({ email: emailSearch }, (err, res) => {
+      if (err) console.log(err);
+      console.log(res.length >0);
+      result = res.length > 0 ? true : false;
+    });
+    return result;
+  },
   findUsers: async () => {
     return await User.find();
   },
@@ -38,15 +47,14 @@ module.exports = {
     await User.findOne({ email: email }, (err, user) => {
       findedUser = user;
     });
-    if(findedUser!=null){
+    if (findedUser != null) {
       var passDecrypted = cryptr.decrypt(findedUser.pass);
     }
-    if(pass === passDecrypted){
+    if (pass === passDecrypted) {
       return findedUser;
-    }else{
+    } else {
       return null;
     }
-    
   },
   deleteUser: id => {
     User.deleteOne({ _id: id }, err => {

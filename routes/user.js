@@ -13,15 +13,21 @@ router.get("/list", async (req, res, next) => {
   res.render("listUsers", { users: result, err: errors });
 });
 
-router.post("/insert", (req, res, next) => {
-  var nombre = req.body.nombre;
-  var apellido = req.body.apellido;
-  var email = req.body.email;
-  var pass = cryptr.encrypt(req.body.pass);
-  var rol = req.body.rol;
+router.post("/insert", async (req, res, next) => {
+  var repeatedEmail = await UserModel.checkRepeatedEmail(req.body.email);
 
-  UserModel.createUser(nombre, apellido, email, pass, rol);
-  res.redirect("/user/list");
+  if (repeatedEmail) {
+    req.flash("info", "Email repetido!");
+    res.redirect("/signup");
+  } else {
+    var nombre = req.body.nombre;
+    var apellido = req.body.apellido;
+    var email = req.body.email;
+    var pass = cryptr.encrypt(req.body.pass);
+    var rol = req.body.rol;
+    UserModel.createUser(nombre, apellido, email, pass, rol);
+    res.redirect("successfulRegister");
+  }
 });
 
 router.post("/delete", (req, res, next) => {
@@ -36,16 +42,17 @@ router.post("/login", async (req, res, next) => {
   if (userLogin) {
     var sess = req.session;
     var userSession = {
-        email:userLogin.email,
-        nombre:userLogin.nombre,
-        apellido:userLogin.apellido,
-        rol:userLogin.rol
-    }
+      email: userLogin.email,
+      nombre: userLogin.nombre,
+      apellido: userLogin.apellido,
+      rol: userLogin.rol
+    };
     sess.userSession = userSession;
-    if(userSession.rol == 1){
-        res.render("panelControlAdmin", { user:req.session.userSession })
+    console.log(userSession.rol);
+    console.log(sess.userSession);
+    if (userSession.rol == 1) {
+      res.render("panelControlAdmin", { user: req.session.userSession });
     }
-    
   } else {
     res.send("usuario noexiste");
   }

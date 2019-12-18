@@ -1,12 +1,23 @@
 <%- include("./layouts/layout", {title: "Sign up"}); -%>
-<h2>Create User</h2>
-<div class="container">
-  <form action="/user/insert" method="post">
-    Nombre: <input type="text" name="nombre" id="" /> Apellido:
-    <input type="text" name="apellido" id="" /> Email:
-    <input type="text" name="email" id="" /> Pass:
-    <input type="text" name="pass" id="" /> Rol:
-    <input type="number" name="rol" id="" />
-    <input type="submit" value="Submit" />
-  </form>
+<div class="container-fluid">
+  <h2>Create User</h2>
+  <% if(message.length==1){ %>
+  <div class="container">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <%= message %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  <% } %>
+
+    <form action="/user/insert" method="post">
+      <p>Nombre: <input type="text" name="nombre" id="" /></p>
+      <p>Apellido: <input type="text" name="apellido" id="" /></p>
+      <p>Email:  <input type="text" name="email" id="" /></p>
+      <p>Pass: <input type="text" name="pass" id="" /></p>
+      <p>Rol: <input type="number" name="rol" id="" /></p>
+      <input type="submit" value="Submit" /></p>
+    </form>
 </div>

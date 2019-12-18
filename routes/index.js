@@ -11,12 +11,12 @@ router.get("/", function(req, res, next) {
   res.render("index");
 });
 
-router.get("/login", (req,res,next)=> {
+router.get("/login", (req, res, next) => {
   res.render("login");
 });
 
-router.get("/signup", (req,res,next)=> {
-  res.render("signUp");
+router.get("/signup", (req, res, next) => {
+  res.render("signUp", { message: req.flash("info") });
 });
 
 module.exports = router;
