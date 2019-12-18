@@ -1,0 +1,20 @@
+<%- include("./layouts/header", {title:"Administrar Usuarios"}) %>
+<%- include("./layouts/navbarAdmin", { activo : "adminUsers"}) %>
+<h1>Hola <%= userSession.nombre %>!</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% usersList.map(userMap=>{ %>
+        <%- include("./templates/userTable", {user: userMap}); %>
+        <% }) %>
+    </tbody>
+</table>

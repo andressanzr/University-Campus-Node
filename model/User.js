@@ -5,6 +5,11 @@ const Schema = mongoose.Schema;
 const Cryptr = require("cryptr");
 const cryptr = new Cryptr("t45AS45asf");
 
+/* ROLES
+  1 - Administrador
+  2 - Profesor
+  3 - Alumno
+*/
 const userSchema = Schema(
   {
     nombre: { type: String, required: true },
@@ -34,7 +39,7 @@ module.exports = {
     var result;
     await User.find({ email: emailSearch }, (err, res) => {
       if (err) console.log(err);
-      console.log(res.length >0);
+      console.log(res.length > 0);
       result = res.length > 0 ? true : false;
     });
     return result;
@@ -56,9 +61,9 @@ module.exports = {
       return null;
     }
   },
-  deleteUser: id => {
-    User.deleteOne({ _id: id }, err => {
-      console.log(err);
+  deleteUser: async email => {
+    await User.deleteOne({ email: email }, err => {
+      console.log("error" + err);
     });
     console.log("item deleted");
   }

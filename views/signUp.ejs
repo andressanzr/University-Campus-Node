@@ -1,23 +1,77 @@
-<%- include("./layouts/layout", {title: "Sign up"}); -%>
-<div class="container-fluid">
+<%- include("./layouts/header", {title: "Sign up"}); -%>
+<%- include("./layouts/navbarIndex", { active : "signup"}) %>
+
+
+<div class="container center">
   <h2>Create User</h2>
   <% if(message.length==1){ %>
-  <div class="container">
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <%= message %>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
+
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= message %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
+
   <% } %>
 
-    <form action="/user/insert" method="post">
-      <p>Nombre: <input type="text" name="nombre" id="" /></p>
-      <p>Apellido: <input type="text" name="apellido" id="" /></p>
-      <p>Email:  <input type="text" name="email" id="" /></p>
-      <p>Pass: <input type="text" name="pass" id="" /></p>
-      <p>Rol: <input type="number" name="rol" id="" /></p>
-      <input type="submit" value="Submit" /></p>
-    </form>
+  <form action="/user/insert" method="post" id="formulario">
+    <div class="form-group">
+      <label for="nombre">Nombre: </label><input type="text" name="nombre" required id="" class="form-control" /></div>
+    <div class="form-group">
+      <label for="apellido">Apellido: </label><input type="text" name="apellido" required id="" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="email">Email: </label><input type="text" name="email" required id="inputEmail" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="pass">Pass: </label><input type="password" name="pass" required id="inputPass" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="rol">Rol: </label>
+      <select name="rol" id="" class="form-control">
+        <option value="1">Administrador</option>
+        <option value="2">Profesor</option>
+        <option value="3">Alumno</option>
+      </select>
+    </div>
+    <div class="form-group" style="text-align: center;">
+      <input type="submit" value="Submit" class="btn btn-primary" />
+    </div>
+  </form>
 </div>
+
+<script>
+  var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  var emailOK = false;
+  var passOK = false;
+
+  $("#inputEmail").on("focusout", () => {
+    if (!$("#inputEmail").val().match(mailformat)) {
+      if ($("#emailMsg").length == 0) {
+        $("#inputEmail").after("<span id='emailMsg' style='color:red'>Not valid email</span>")
+        emailOK = false
+      }
+    } else {
+      $("#emailMsg").remove();
+      emailOK = true
+    }
+  })
+
+  $("#inputPass").on("focusout", (e) => {
+    if ($("#inputPass").val().length < 4) {
+      $("#inputPass").after("<span id='passMsg' style='color:red'>Not valid pass</span>")
+      passOK = false
+    } else {
+      $("#passMsg").remove();
+      passOK = true
+    }
+  })
+  $("#formulario").on("submit", () => {
+    if (emailOK && passOK) {
+      return true;
+    } else {
+      return false;
+    }
+  })
+</script>

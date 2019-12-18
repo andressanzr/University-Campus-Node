@@ -3,8 +3,6 @@ var session = require("express-session");
 
 var router = express.Router();
 
-var session;
-
 /* GET home page. */
 router.get("/", function(req, res, next) {
   session = req.session;
@@ -12,11 +10,31 @@ router.get("/", function(req, res, next) {
 });
 
 router.get("/login", (req, res, next) => {
-  res.render("login");
+  res.render("login", { message: req.flash("info") });
+});
+
+router.get("/logout", (req, res, next) => {
+  req.session.destroy();
+  res.redirect("/");
 });
 
 router.get("/signup", (req, res, next) => {
   res.render("signUp", { message: req.flash("info") });
 });
 
+router.get("/administrarUsuarios", async (req, res, next) => {
+  if (req.session.userSession && req.session.userSession.rol == 1) {
+    var usersList = await UserModel.findUsers();
+    res.render("administrarUsuarios", {
+      userSession: req.session.userSession,
+      usersList: usersList
+    });
+  } else {
+    noPrivileges(res);
+  }
+});
+
+const noPrivileges = res => {
+  res.render("error", { errors: "You don´t have enough privileges" });
+};
 module.exports = router;

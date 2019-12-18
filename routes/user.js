@@ -26,16 +26,20 @@ router.post("/insert", async (req, res, next) => {
     var pass = cryptr.encrypt(req.body.pass);
     var rol = req.body.rol;
     UserModel.createUser(nombre, apellido, email, pass, rol);
-    res.redirect("successfulRegister");
+    res.render("login", {
+      registroOK: "¡Registro completado satisfactoriamente!",
+      message: ""
+    });
   }
 });
 
 router.post("/delete", (req, res, next) => {
-  UserModel.deleteUser(req.body.id);
-  res.redirect("/user/list");
+  UserModel.deleteUser(req.body.email);
+  res.redirect("/login");
 });
 
 router.post("/login", async (req, res, next) => {
+  // TODO MIRAR PORQUE LOS PARAMETROS DEL POST SE QUEDAN GUARDADOS
   var email = req.body.email;
   var pass = req.body.pass;
   var userLogin = await UserModel.loginUser(email, pass);
@@ -48,14 +52,28 @@ router.post("/login", async (req, res, next) => {
       rol: userLogin.rol
     };
     sess.userSession = userSession;
-    console.log(userSession.rol);
-    console.log(sess.userSession);
     if (userSession.rol == 1) {
-      res.render("panelControlAdmin", { user: req.session.userSession });
+      var usersList = await UserModel.findUsers();
+      res.render("administrarUsuarios", {
+        userSession: req.session.userSession,
+        usersList: usersList
+      });
     }
   } else {
-    res.send("usuario noexiste");
+    req.flash("info", "Email y/o contraseña incorrectos");
+    res.redirect("/login");
   }
+});
+
+router.post("/editForward", (req, res, next) => {
+  var userEditForward = {
+    nombre: req.body.nombre,
+    apellido: req.body.apellido,
+    email: req.body.email,
+    pass: req.body.pass,
+    rol: req.body.rol
+  };
+  res.render("editUser", { userEdit: userEditForward });
 });
 
 module.exports = router;
