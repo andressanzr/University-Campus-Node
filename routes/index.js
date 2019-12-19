@@ -3,6 +3,8 @@ var session = require("express-session");
 
 var router = express.Router();
 
+const UserModel = require("../model/User");
+
 /* GET home page. */
 router.get("/", function(req, res, next) {
   session = req.session;
@@ -10,7 +12,7 @@ router.get("/", function(req, res, next) {
 });
 
 router.get("/login", (req, res, next) => {
-  res.render("login", { message: req.flash("info") });
+  res.render("login", { message: req.flash("info"), registroOK:false });
 });
 
 router.get("/logout", (req, res, next) => {
@@ -29,6 +31,18 @@ router.get("/administrarUsuarios", async (req, res, next) => {
       userSession: req.session.userSession,
       usersList: usersList
     });
+  } else {
+    noPrivileges(res);
+  }
+});
+router.get("/administrarAsignaturas", async (req, res, next) => {
+  if (req.session.userSession && req.session.userSession.rol == 1) {
+    var subjectList; 
+    /*
+    res.render("administrarUsuarios", {
+      userSession: req.session.userSession,
+      usersList: usersList
+    });*/
   } else {
     noPrivileges(res);
   }

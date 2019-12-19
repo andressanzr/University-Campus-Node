@@ -9,21 +9,22 @@
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
+  </div>
     <% } %>
-    <% if(message){if(message.length==1){ %>
+    <% if(message.length==1){ %>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
       <%= message %>
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <% } }%>
-    <form action="/user/login" method="post">
+    <% } %>
+    <form action="/user/login" method="post" id="formulario">
       <div class="form-group">
-        <label for="email">Email: </label><input type="text" name="email" id="" class="form-control" />
+        <label for="email">Email: </label><input type="text" name="email"  required id="inputEmail" class="form-control" />
       </div>
       <div class="form-group">
-        <label for="pass">Password: </label><input type="password" name="pass" id="" class="form-control" />
+        <label for="pass">Password: </label><input type="password" name="pass" required id="inputPass" class="form-control" />
       </div>
       <div class="container" style="text-align: center;">
 
@@ -32,3 +33,37 @@
 
     </form>
   </div>
+  <script>
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    var emailOK = false;
+    var passOK = false;
+  
+    $("#inputEmail").on("focusout", () => {
+      if (!$("#inputEmail").val().match(mailformat)) {
+        if ($("#emailMsg").length == 0) {
+          $("#inputEmail").after("<span id='emailMsg' style='color:red'>Not valid email</span>")
+          emailOK = false
+        }
+      } else {
+        $("#emailMsg").remove();
+        emailOK = true
+      }
+    })
+  
+    $("#inputPass").on("focusout", (e) => {
+      if ($("#inputPass").val().length < 4) {
+        $("#inputPass").after("<span id='passMsg' style='color:red'>Not valid pass</span>")
+        passOK = false
+      } else {
+        $("#passMsg").remove();
+        passOK = true
+      }
+    })
+    $("#formulario").on("submit", () => {
+      if (emailOK && passOK) {
+        return true;
+      } else {
+        return false;
+      }
+    })
+  </script>

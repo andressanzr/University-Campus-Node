@@ -1,6 +1,11 @@
-<%- include("./layout/header", { title: "Editar Usuario"}) %>
-<h1>Editar Usuario</h1>
-<form action="user/edit" method="post">
-    <%- include("./templates/userEdit" { user: userEdit }) %>
+<%- include("./layouts/header", { title: "Editar Usuario"}); %>
+<%- include("./layouts/navbarAdmin", { activo : "adminUsers"}) %>
+
+<div class="container center">
+  <h1>Editar Usuario <%= userEdit.nombre %> <%= userEdit.apellido %> </h1>
+  <form action="/user/edit" method="post">
+    <input type="hidden" name="idUser" value="<%= userID %>">
+    <%- include("./templates/userEdit", { user: userEdit }); %>
     <button type="submit" class="btn btn-primary">Guardar</button>
-</form>
+  </form>
+</div>

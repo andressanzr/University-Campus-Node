@@ -9,13 +9,15 @@ var flash = require("express-flash");
 
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
+var subjectRouter = require("./routes/subject");
 
 var ejs = require("ejs");
 
 const mongoose = require("mongoose");
+
 // connect to MongoDB
 var url = "mongodb://localhost:27017/entregable";
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 var db = mongoose.connection;
 
@@ -53,6 +55,8 @@ app.use(flash());
 
 app.use("/", indexRouter);
 app.use("/user", userRouter);
+app.use("/subject", subjectRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

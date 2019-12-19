@@ -32,20 +32,34 @@ module.exports = {
       pass: pass,
       rol: rol
     });
-
     userCreate.save();
   },
   checkRepeatedEmail: async emailSearch => {
     var result;
     await User.find({ email: emailSearch }, (err, res) => {
       if (err) console.log(err);
-      console.log(res.length > 0);
       result = res.length > 0 ? true : false;
     });
     return result;
   },
   findUsers: async () => {
     return await User.find();
+  },
+  findUserIdByEmail: async (emailSearch) => {
+    var idUserFinded;
+    await User.findOne({ email: emailSearch }, (err, res) => {
+      if (err) console.log(err);
+      idUserFinded = res._id;
+    });
+    return idUserFinded;
+  },
+  findUserByEmail: async (emailSearch) => {
+    var userFinded;
+    await User.findOne({ email: emailSearch }, (err, res) => {
+      if (err) console.log(err);
+      userFinded = res;
+    });
+    return userFinded;
   },
   loginUser: async (email, pass) => {
     var findedUser;
@@ -61,10 +75,17 @@ module.exports = {
       return null;
     }
   },
-  deleteUser: async email => {
+  deleteUserByEmail: async email => {
+    console.log(email)
     await User.deleteOne({ email: email }, err => {
-      console.log("error" + err);
+      console.log(err);
     });
-    console.log("item deleted");
+    console.log( email+"deleted");
+  },
+  updateUserById: async (id, userUpdate) => {
+    await User.findOneAndUpdate({ _id: id }, userUpdate, (err, res) => {
+      err ? console.log(err) : "";
+      console.log("result update" + res);
+    })
   }
 };

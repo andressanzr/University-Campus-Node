@@ -7,16 +7,16 @@
         <form action="/user/editForward" method="post">
             <input type="hidden" name="nombre" id="" value="<%= user.nombre %>">
             <input type="hidden" name="apellido" id="" value="<%= user.apellido %>">
-            <input type="hidden" name="edit" value="<%= user.email %>">
+            <input type="hidden" name="email" value="<%= user.email %>">
             <input type="hidden" name="pass" id="" value="<%= user.pass %>">
-            <input type="hidden" name="rol" id="" value="<%= user.rol %>"></p>
+            <input type="hidden" name="rol" id="" value="<%= user.rol %>">
             <button type="submit" class="btn btn-primary">Edit</button>
         </form>
 
     </td>
     <td>
         <form action="/user/delete" method="post">
-            <input type="hidden" name="id" value="<%= user.email %>">
+            <input type="hidden" name="email" value="<%= user.email %>">
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>
     </td>

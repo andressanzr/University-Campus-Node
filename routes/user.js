@@ -33,9 +33,11 @@ router.post("/insert", async (req, res, next) => {
   }
 });
 
-router.post("/delete", (req, res, next) => {
-  UserModel.deleteUser(req.body.email);
-  res.redirect("/login");
+router.post("/delete", async (req, res, next) => {
+  await UserModel.deleteUserByEmail(req.body.email);
+  if(req.body.email == req.session.email){
+    redirect("/logout");
+  }
 });
 
 router.post("/login", async (req, res, next) => {
@@ -52,20 +54,34 @@ router.post("/login", async (req, res, next) => {
       rol: userLogin.rol
     };
     sess.userSession = userSession;
-    if (userSession.rol == 1) {
-      var usersList = await UserModel.findUsers();
-      res.render("administrarUsuarios", {
-        userSession: req.session.userSession,
-        usersList: usersList
-      });
+    switch (userSession.rol) {
+      case 1:
+        var usersList = await UserModel.findUsers();
+        res.render("administrarUsuarios", {
+          userSession: req.session.userSession,
+          usersList: usersList
+        });
+        break;
+      case 2:
+
+        break;
+      case 3:
+
+        break;
+      default:
+        res.status(500);
+        res.render("error", { errors: "Internal error" });
+        break;
+
     }
+
   } else {
     req.flash("info", "Email y/o contraseña incorrectos");
-    res.redirect("/login");
+    res.render("/login");
   }
 });
 
-router.post("/editForward", (req, res, next) => {
+router.post("/editForward", async (req, res, next) => {
   var userEditForward = {
     nombre: req.body.nombre,
     apellido: req.body.apellido,
@@ -73,7 +89,20 @@ router.post("/editForward", (req, res, next) => {
     pass: req.body.pass,
     rol: req.body.rol
   };
-  res.render("editUser", { userEdit: userEditForward });
+  var userIDSearch = await UserModel.findUserIdByEmail(userEditForward.email);
+  res.render("editUser", { userEdit: userEditForward, userID: userIDSearch });
 });
+
+router.post("/edit", (req, res, next) => {
+  var id = req.body.idUser;
+  var userUpdate = {
+    nombre: req.body.nombre,
+    apellido: req.body.apellido,
+    email: req.body.email,
+    pass: req.body.pass,
+    rol: req.body.rol
+  };
+  UserModel.updateUserById(id, userUpdate);
+})
 
 module.exports = router;
