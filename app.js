@@ -17,7 +17,11 @@ const mongoose = require("mongoose");
 
 // connect to MongoDB
 var url = "mongodb://localhost:27017/entregable";
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect(url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false
+});
 
 var db = mongoose.connection;
 
@@ -30,6 +34,7 @@ var app = express();
 //session set up
 
 //no compatible con flash
+/*
 app.use(
   session({
     secret: "shtyo12poi",
@@ -38,17 +43,15 @@ app.use(
     cookie: { secure: false }
   })
 );
-
+*/
 // view engine setup
 app.set("view engine", "ejs");
-
-
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser('keyboard cat'));
-app.use(session({ cookie: { maxAge: 60000 }}));
+app.use(cookieParser("keyboard cat"));
+app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(flash());
@@ -56,7 +59,6 @@ app.use(flash());
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/subject", subjectRouter);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

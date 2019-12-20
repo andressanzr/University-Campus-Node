@@ -4,6 +4,7 @@ var session = require("express-session");
 var router = express.Router();
 
 const UserModel = require("../model/User");
+const SubjectModel = require("../model/Subject");
 
 /* GET home page. */
 router.get("/", function(req, res, next) {
@@ -12,7 +13,7 @@ router.get("/", function(req, res, next) {
 });
 
 router.get("/login", (req, res, next) => {
-  res.render("login", { message: req.flash("info"), registroOK:false });
+  res.render("login", { message: req.flash("info"), tipo: req.flash("type") });
 });
 
 router.get("/logout", (req, res, next) => {
@@ -29,7 +30,9 @@ router.get("/administrarUsuarios", async (req, res, next) => {
     var usersList = await UserModel.findUsers();
     res.render("administrarUsuarios", {
       userSession: req.session.userSession,
-      usersList: usersList
+      usersList: usersList,
+      message: req.flash("info"),
+      tipo: req.flash("type")
     });
   } else {
     noPrivileges(res);
@@ -37,18 +40,20 @@ router.get("/administrarUsuarios", async (req, res, next) => {
 });
 router.get("/administrarAsignaturas", async (req, res, next) => {
   if (req.session.userSession && req.session.userSession.rol == 1) {
-    var subjectList; 
-    /*
-    res.render("administrarUsuarios", {
+    var subjectList = await SubjectModel.findSubjectsPopulateUsers();
+    res.render("administrarAsignaturas", {
       userSession: req.session.userSession,
-      usersList: usersList
-    });*/
+      subjectList: subjectList,
+      title: "Administrar Asignaturas"
+    });
   } else {
     noPrivileges(res);
   }
 });
 
 const noPrivileges = res => {
-  res.render("error", { errors: "You don´t have enough privileges" });
+  res.render("error", {
+    errors: "You don´t have enough privileges<a href='/login'>Login</a>"
+  });
 };
 module.exports = router;

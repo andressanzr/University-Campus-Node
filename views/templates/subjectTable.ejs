@@ -1,0 +1,33 @@
+<tr>
+    <td><%= subject.nombre %></td>
+    <td><%= subject.infoInstalar %></td>
+    <td><%= subject.enlaces %></td>
+    <td>
+        <% subject.profResponsables.map(profe =>{ %>
+        <div>
+            <%= profe.nombre  %>
+            <%= profe.apellido  %>
+        </div>
+        <%  }) %>
+    </td>
+    <td>
+        <% subject.alumnos.map(alumno =>{ %>
+        <div>
+            <%= alumno.nombre %>
+            <%= alumno.apellido %>
+        </div>
+        <%  }) %>
+    </td>
+    <td>
+        <form action="/subject/edit" method="post">
+            <input type="hidden" name="id" value="<%= subject._id %>">
+            <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+    </td>
+    <td>
+        <form action="/subject/delete" method="post">
+            <input type="hidden" name="email" value="<%= subject._id %>">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </td>
+</tr>

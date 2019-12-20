@@ -1,6 +1,18 @@
 <%- include("./layouts/header", {title:"Administrar Usuarios"}) %>
 <%- include("./layouts/navbarAdmin", { activo : "adminUsers"}) %>
-<h1>Hola <%= userSession.nombre %>!</h1>
+<div class="container text-center ">
+    <h1>Hola <%= userSession.nombre %>!</h1>
+    <% if(message.length == 1) { %>
+
+    <div class="alert alert-<%= tipo %> alert-dismissible fade show" role="alert">
+        <%= message  %>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <% } %>
+</div>
 <table class="table">
     <thead>
         <tr>

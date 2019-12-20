@@ -45,7 +45,10 @@ module.exports = {
   findUsers: async () => {
     return await User.find();
   },
-  findUserIdByEmail: async (emailSearch) => {
+  findUserById: async id => {
+    return await User.findById(id);
+  },
+  findUserIdByEmail: async emailSearch => {
     var idUserFinded;
     await User.findOne({ email: emailSearch }, (err, res) => {
       if (err) console.log(err);
@@ -53,7 +56,7 @@ module.exports = {
     });
     return idUserFinded;
   },
-  findUserByEmail: async (emailSearch) => {
+  findUserByEmail: async emailSearch => {
     var userFinded;
     await User.findOne({ email: emailSearch }, (err, res) => {
       if (err) console.log(err);
@@ -76,16 +79,16 @@ module.exports = {
     }
   },
   deleteUserByEmail: async email => {
-    console.log(email)
+    console.log(email);
     await User.deleteOne({ email: email }, err => {
       console.log(err);
     });
-    console.log( email+"deleted");
+    console.log(email + "deleted");
   },
   updateUserById: async (id, userUpdate) => {
     await User.findOneAndUpdate({ _id: id }, userUpdate, (err, res) => {
       err ? console.log(err) : "";
       console.log("result update" + res);
-    })
+    });
   }
 };
