@@ -45,6 +45,9 @@ module.exports = {
   findUsers: async () => {
     return await User.find();
   },
+  findUsersByRol: async rol => {
+    return await User.find({ rol: rol });
+  },
   findUserById: async id => {
     return await User.findById(id);
   },

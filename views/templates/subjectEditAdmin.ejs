@@ -1,0 +1,66 @@
+<div class="form-group">
+    <label for="">Alumnos: </label>
+    <ul id="alumnosAsignatura">
+        <% subjectEdit.alumnos.map(alumno =>{ %>
+        <li><input type="hidden" name="listaAlumnos" value="<%= alumno._id %>" />
+            <%= alumno.email %> (<%= alumno.nombre %> <%= alumno.apellido %>)
+            <button type="button" class="btn btn-danger btn-sm" onclick=" $(this).parent().remove();">Delete</button>
+        </li>
+        <% }) %>
+    </ul>
+    Todos alumnos:
+    <select id="alumnos" class="form-control">
+        <option disabled selected id="defaultOptionAlumnos" value="default">Selecciona un alumno</option>
+        <% todosAlumnos.map(alumno =>{ %>
+        <option value="<%= alumno._id %>"><%= alumno.email %> (<%= alumno.nombre %> <%= alumno.apellido %>)</option>
+        <% }) %>
+    </select>
+</div>
+<div class="form-group">
+    <label for="nombre">Profesores: </label>
+    <ul id="profesoresAsignatura">
+        <% subjectEdit.profResponsables.map(profe =>{ %>
+        <li><input type="hidden" name="listaProfesores" value="<%= profe._id %>" /><%= profe.email %>
+            (<%= profe.nombre %>
+            <%= profe.apellido %>)<button type="button" class="btn btn-danger btn-sm"
+                onclick=" $(this).parent().remove();">Delete</button>
+        </li>
+        <% }) %>
+    </ul>
+    Todos profesores:
+    <select id="profesores" class="form-control">
+        <option disabled selected id="defaultOptionProfesores" value="default">Selecciona un profesor</option>
+        <% todosProfesores.map(profe =>{ %>
+
+        <option value="<%= profe._id %>"><%= profe.email %> (<%= profe.nombre %> <%= profe.apellido %>)</option>
+        <% }) %>
+    </select>
+</div>
+
+
+<script>
+    // no funciona arreglar si hay tiempo
+    /*
+    function removeOnClick(tipoUsuario) {
+        $(`<option value="${$(this).parent().val()}">${$(this).parent().text()}</option>`).appendTo(`#profesores`);
+        $(this).parent().remove();
+    }
+*/
+    String.prototype.capitalize = function () {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+    }
+    function addSelectItemsToList(list) {
+        $(`#${list}`).change(() => {
+            $(`#${list} option:selected`).each(function () {
+                $(`<li><input type="hidden" name="lista${list.capitalize()}" value="${$(this).val()}"/>${$(this).text()}<button type="button" class="btn btn-danger btn-sm"
+                        onclick=" $(this).parent().remove();">Delete</button></li>`).appendTo(`#${list}Asignatura`);
+                $(this).remove();
+
+            });
+            $(`#${list}`).val(`defaultOption${list.capitalize()}`);
+        })
+    }
+    addSelectItemsToList("alumnos");
+    addSelectItemsToList("profesores");
+
+</script>

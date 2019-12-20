@@ -29,6 +29,7 @@ module.exports = {
 
     subjectCreate.save((err, res) => {
       err ? console.log(err) : "";
+      console.log(res);
     });
   },
   findSubjects: async () => {
@@ -40,5 +41,30 @@ module.exports = {
       path: "alumnos profResponsables"
     });
     return subjectList;
+  },
+  findSubjectById: async id => {
+    return await Subject.findById(id);
+  },
+  findSubjectByIdPopulateUsers: async id => {
+    return await Subject.findById(id).populate({
+      path: "alumnos profResponsables"
+    });
+  },
+  updateTeachersStudentsById: async (id, listTeachers, listStudents) => {
+    await Subject.findByIdAndUpdate(
+      id,
+      { profResponsables: listTeachers, alumnos: listStudents },
+      (err, res) => {
+        console.log("error " + err);
+        console.log("result " + res);
+      }
+    );
+  },
+  deleteSubjectById: async id => {
+    console.log(id);
+    await Subject.findByIdAndDelete(id, (err, res) => {
+      console.log("error " + err);
+      console.log("result " + res);
+    });
   }
 };

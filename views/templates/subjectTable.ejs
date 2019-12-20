@@ -19,14 +19,14 @@
         <%  }) %>
     </td>
     <td>
-        <form action="/subject/edit" method="post">
+        <form action="/subject/editForward" method="post">
             <input type="hidden" name="id" value="<%= subject._id %>">
             <button type="submit" class="btn btn-primary">Edit</button>
         </form>
     </td>
     <td>
         <form action="/subject/delete" method="post">
-            <input type="hidden" name="email" value="<%= subject._id %>">
+            <input type="hidden" name="id" value="<%= subject._id %>">
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>
     </td>

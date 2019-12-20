@@ -23,3 +23,6 @@ body {
 .text-center {
   text-align: center;
 }
+.btn-sm {
+  margin: 10px;
+}

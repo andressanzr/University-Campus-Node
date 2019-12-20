@@ -36,10 +36,11 @@ router.post("/delete", async (req, res, next) => {
   await UserModel.deleteUserByEmail(req.body.email);
   req.flash("info", "User deleted successfully!");
   req.flash("type", "success");
-  res.redirect("/administrarUsuarios");
-  if (req.body.email == req.session.email) {
-    redirect("/logout");
+  if (req.body.email == req.session.userSession.email) {
+    res.redirect("/logout");
   }
+  res.redirect("/administrarUsuarios");
+  // te saca si borras el usuario con el que has iniciado sesion
 });
 
 router.post("/login", async (req, res, next) => {

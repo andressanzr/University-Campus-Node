@@ -1,0 +1,13 @@
+<%- include("./layouts/header", { title: "Editar Asignatura"}); %>
+<%- include("./layouts/navbarAdmin", { activo : "adminAsign"}) %>
+
+<div class="container center">
+    <h1>Editar Asignatura : <%= subjectEdit.nombre %></h1>
+    <div class="container center" style="margin-top: 20px;">
+        <form action="/subject/edit" method="post">
+            <input type="hidden" name="id" value="<%= subjectEdit._id %>">
+            <%- include("./templates/subjectEditAdmin", { subject: subjectEdit }); %>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+</div>
