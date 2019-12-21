@@ -1,0 +1,98 @@
+<%- include("./layouts/header", {title:"Añadir Usuarios"}) %>
+<%- include("./layouts/navbarAdmin", { activo : "adminAsign"}) %>
+<div class="container center">
+    <h1>Añadir Asignatura</h1>
+    <form action="/subject/insert" id="formulario" method="post">
+        <div class="form-group">
+            <label for="">Nombre: </label>
+            <input type="text" name="nombre" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="">Info instalar: </label>
+            <textarea type="text" name="infoInstalar" class="form-control" rows="5"> </textarea>
+        </div>
+        <div class="form-group">
+            <label for="">Enlaces: </label>
+            <ul id="listaEnlaces">
+
+            </ul>
+            <input type="text" id="inputEnlace" name="enlaces" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="">Alumnos: </label>
+            <ul id="alumnosAsignatura">
+            </ul>
+            Todos alumnos:
+            <select id="alumnos" class="form-control">
+                <option disabled selected id="defaultOptionAlumnos" value="default">Selecciona un alumno</option>
+                <% todosAlumnos.map(alumno =>{ %>
+                <option value="<%= alumno._id %>"><%= alumno.email %> (<%= alumno.nombre %> <%= alumno.apellido %>)
+                </option>
+                <% }) %>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="nombre">Profesores: </label>
+            <ul id="profesoresAsignatura">
+            </ul>
+            Todos profesores:
+            <select id="profesores" class="form-control">
+                <option disabled selected id="defaultOptionProfesores" value="default">Selecciona un profesor</option>
+                <% todosProfesores.map(profe =>{ %>
+
+                <option value="<%= profe._id %>"><%= profe.email %> (<%= profe.nombre %> <%= profe.apellido %>)</option>
+                <% }) %>
+            </select>
+        </div>
+        <div class="form-group" style="text-align: center;">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+</div>
+<script>
+    // no funciona arreglar si hay tiempo
+    /*
+    function removeOnClick(tipoUsuario) {
+        $(`<option value="${$(this).parent().val()}">${$(this).parent().text()}</option>`).appendTo(`#profesores`);
+        $(this).parent().remove();
+    }
+*/
+    $(document).ready(() => {
+        $(window).keydown((e) => {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                return false;
+            }
+        })
+    })
+    String.prototype.capitalize = function () {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+    }
+    function addSelectItemsToList(list) {
+        $(`#${list}`).change(() => {
+            $(`#${list} option:selected`).each(function () {
+                $(`<li><input type="hidden" name="lista${list.capitalize()}" value="${$(this).val()}"/>${$(this).text()}<button type="button" class="btn btn-danger btn-sm"
+                        onclick=" $(this).parent().remove();">Delete</button></li>`).appendTo(`#${list}Asignatura`);
+                $(this).remove();
+
+            });
+            $(`#${list}`).val(`defaultOption${list.capitalize()}`);
+        })
+    }
+    addSelectItemsToList("alumnos");
+    addSelectItemsToList("profesores");
+
+
+
+    $("#inputEnlace").on("keydown", (e) => {
+        if (e.which == 13) {
+            if ($("#inputEnlace").val().length > 8) {
+                var link = $("#inputEnlace").val();
+                $("#listaEnlaces").append(`<li><input type="hidden" name="enlace" value ="${link}"/><a target="_blank" href="${link}">${link}</a></li>`);
+                $("#inputEnlace").val(' ')
+            }
+        }
+    })
+</script>

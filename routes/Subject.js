@@ -6,21 +6,25 @@ var router = express.Router();
 const UserModel = require("../model/User");
 const SubjectModel = require("../model/Subject");
 
-router.get("/insert", async (req, res, next) => {
-  /*
-  var alumno1 = await UserModel.findUserByEmail("alumno1@c.com");
-  var alumno2 = await UserModel.findUserByEmail("alumno2@c.com");
+router.post("/insert", async (req, res, next) => {
+  if (req.session.userSession.rol == 1) {
+    var nombre = req.body.nombre;
+    var infoInstalar = req.body.infoInstalar;
+    var enlaces = req.body.enlace;
+    var profResponsables = req.body.listaProfesores;
+    var alumnos = req.body.listaAlumnos;
 
-  var prof1 = await UserModel.findUserByEmail("profe1@e.com");
-  var prof2 = await UserModel.findUserByEmail("profe2@e.com");
-  
-  await SubjectModel.createSubject(
-    "Android",
-    "Android studio",
-    ["jetbrains", "android.developers"],
-    [alumno1],
-    [prof1]
-  );
+    await SubjectModel.createSubject(
+      nombre,
+      infoInstalar,
+      enlaces,
+      profResponsables,
+      alumnos
+    );
+    res.redirect("/administrarAsignaturas");
+  } else {
+    noPrivileges(res);
+  }
   /*
   await SubjectModel.createSubject(
     "Acceso a datos",
@@ -34,16 +38,6 @@ router.get("/insert", async (req, res, next) => {
 
 router.post("/editForward", async (req, res, next) => {
   var id = req.body.id;
-  /*
-  var subjectEditForward = {
-    id: req.body.id,
-    nombre: req.body.nombre,
-    infoInstalar: req.body.apellido,
-    enlaces: req.body.email,
-    profResponsables: req.body.pass,
-    alumnos: req.body.rol
-  };
-  */
   // editar asignaturas admin
   if (req.session.userSession.rol == 1) {
     var subjectEditSearch = await SubjectModel.findSubjectByIdPopulateUsers(id);
@@ -56,21 +50,38 @@ router.post("/editForward", async (req, res, next) => {
     });
   } else if (req.session.userSession.rol == 2) {
     // render teachers edit subject
+    var subjectEditSearch = await SubjectModel.findSubjectByIdPopulateUsers(id);
+    res.render("editSubjectProfe", { subjectEdit: subjectEditSearch });
   } else {
     noPrivileges(res);
   }
 });
 router.post("/edit", async (req, res, next) => {
   var id = req.body.id;
-  var listaProfesores = req.body.listaProfesores;
-  var listaAlumnos = req.body.listaAlumnos;
 
-  await SubjectModel.updateTeachersStudentsById(
-    id,
-    listaProfesores,
-    listaAlumnos
-  );
-  res.redirect("/administrarAsignaturas");
+  if (req.session.userSession.rol == 1) {
+    var listaProfesores = req.body.listaProfesores;
+    var listaAlumnos = req.body.listaAlumnos;
+
+    await SubjectModel.updateTeachersStudentsById(
+      id,
+      listaProfesores,
+      listaAlumnos
+    );
+    res.redirect("/administrarAsignaturas");
+  } else if (req.session.userSession.rol == 2) {
+    var nombre = req.body.nombre;
+    var infoInsta = req.body.infoInstalar;
+    var enlaces = req.body.enlaces;
+
+    await SubjectModel.updateNombreInfoEnlacesById(
+      id,
+      nombre,
+      infoInsta,
+      enlaces
+    );
+    res.redirect("/administrarAsignaturasProfesor");
+  }
 });
 
 router.post("/delete", (req, res, next) => {

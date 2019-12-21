@@ -29,12 +29,19 @@ module.exports = {
 
     subjectCreate.save((err, res) => {
       err ? console.log(err) : "";
-      console.log(res);
+      console.log("saved: " + res);
     });
   },
   findSubjects: async () => {
     var subj = await Subject.find();
     console.log(subj);
+  },
+  /// TODO profesores mostrar solo us asignaturas
+  findStudentsSubjectsByStudentId: async id => {
+    var subjList = await Subject.find({ alumnos: id }, (err, res) => {
+      console.log("err" + err);
+      console.log("res " + res);
+    });
   },
   findSubjectsPopulateUsers: async () => {
     var subjectList = await Subject.find().populate({
@@ -54,6 +61,16 @@ module.exports = {
     await Subject.findByIdAndUpdate(
       id,
       { profResponsables: listTeachers, alumnos: listStudents },
+      (err, res) => {
+        console.log("error " + err);
+        console.log("result " + res);
+      }
+    );
+  },
+  updateNombreInfoEnlacesById: async (id, nombre, infoInstalar, enlaces) => {
+    await Subject.findByIdAndUpdate(
+      id,
+      { nombre: nombre, infoInstalar: infoInstalar, enlaces: enlaces },
       (err, res) => {
         console.log("error " + err);
         console.log("result " + res);

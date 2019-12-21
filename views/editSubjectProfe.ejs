@@ -1,0 +1,10 @@
+<%- include("./layouts/header", {title:"Editar Asignaturas"}) %>
+<%- include("./layouts/navbarProfesor", { activo : "adminAsign"}) %>
+<div class="container center">
+    <form action="/subject/edit" method="post">
+        <h1>Editar asignatura : <%= subjectEdit.nombre %></h1>
+        <input type="hidden" name="id" value="<%= subjectEdit._id %>">
+        <%- include("./templates/subjectEditProfe", { subject:subjectEdit }) %>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>

@@ -1,12 +1,14 @@
 <div class="form-group">
     <label for="">Alumnos: </label>
     <ul id="alumnosAsignatura">
+        <% if(subjectEdit.alumnos){ %>
         <% subjectEdit.alumnos.map(alumno =>{ %>
         <li><input type="hidden" name="listaAlumnos" value="<%= alumno._id %>" />
             <%= alumno.email %> (<%= alumno.nombre %> <%= alumno.apellido %>)
             <button type="button" class="btn btn-danger btn-sm" onclick=" $(this).parent().remove();">Delete</button>
         </li>
         <% }) %>
+        <% } %>
     </ul>
     Todos alumnos:
     <select id="alumnos" class="form-control">
@@ -19,6 +21,7 @@
 <div class="form-group">
     <label for="nombre">Profesores: </label>
     <ul id="profesoresAsignatura">
+        <% if(subjectEdit.profResponsables){ %>
         <% subjectEdit.profResponsables.map(profe =>{ %>
         <li><input type="hidden" name="listaProfesores" value="<%= profe._id %>" /><%= profe.email %>
             (<%= profe.nombre %>
@@ -26,6 +29,7 @@
                 onclick=" $(this).parent().remove();">Delete</button>
         </li>
         <% }) %>
+        <% } %>
     </ul>
     Todos profesores:
     <select id="profesores" class="form-control">

@@ -1,5 +1,6 @@
 <%- include("./layouts/header", {title:"Administrar Usuarios"}) %>
 <%- include("./layouts/navbarAdmin", { activo : "adminUsers"}) %>
+
 <div class="container text-center ">
     <h1>Hola <%= userSession.nombre %>!</h1>
     <% if(message.length == 1) { %>
@@ -30,4 +31,4 @@
         <% }) %>
     </tbody>
 </table>
-<button type="submit">Añadir usuarios</button>
+<a href="/addUserAdmin"><button type="button" class="btn btn-dark">Añadir usuarios</button></a>

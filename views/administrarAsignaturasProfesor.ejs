@@ -1,0 +1,22 @@
+<%- include("./layouts/header", {title:"Administrar Asignaturas"}) %>
+<%- include("./layouts/navbarProfesor", { activo : "adminAsign"}) %>
+
+<h1 style="text-align: center;"><%= title %></h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>InfoInstalar</th>
+            <th>Enlaces</th>
+            <th>Profes Responsables</th>
+            <th>Alumnos</th>
+            <th>Editar</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% subjectList.map( subjectMap =>{ %>
+        <%-include("./templates/subjectTableProfe", { subject: subjectMap }); %>
+        <% }) %>
+    </tbody>
+</table>

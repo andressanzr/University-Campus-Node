@@ -7,12 +7,6 @@ const UserModel = require("..\\model\\User");
 const Cryptr = require("cryptr");
 const cryptr = new Cryptr("t45AS45asf");
 
-router.get("/list", async (req, res, next) => {
-  var result = await UserModel.findUsers();
-  var errors = result.length ? "" : "no users";
-  res.render("listUsers", { users: result, err: errors });
-});
-
 router.post("/insert", async (req, res, next) => {
   var repeatedEmail = await UserModel.checkRepeatedEmail(req.body.email);
 
@@ -25,10 +19,14 @@ router.post("/insert", async (req, res, next) => {
     var email = req.body.email;
     var pass = cryptr.encrypt(req.body.pass);
     var rol = req.body.rol;
-    UserModel.createUser(nombre, apellido, email, pass, rol);
+    await UserModel.createUser(nombre, apellido, email, pass, rol);
     req.flash("info", "Registered successfully!");
     req.flash("type", "success");
-    res.redirect("/login");
+    if (req.session.userSession && req.session.userSession.rol == 1) {
+      res.redirect("/administrarUsuarios");
+    } else {
+      res.redirect("/login");
+    }
   }
 });
 
@@ -59,17 +57,13 @@ router.post("/login", async (req, res, next) => {
     req.session.userSession = userSession;
     switch (userSession.rol) {
       case 1:
-        var usersList = await UserModel.findUsers();
-        res.render("administrarUsuarios", {
-          userSession: req.session.userSession,
-          usersList: usersList,
-          message: req.flash("info"),
-          tipo: req.flash("type")
-        });
+        res.redirect("/administrarUsuarios");
         break;
       case 2:
+        res.redirect("/administrarAsignaturasProfesor");
         break;
       case 3:
+        res.redirect("/verAsignaturasAlumno");
         break;
       default:
         res.status(500);
@@ -101,7 +95,7 @@ router.post("/edit", (req, res, next) => {
     nombre: req.body.nombre,
     apellido: req.body.apellido,
     email: req.body.email,
-    pass: req.body.pass,
+    pass: cryptr.encrypt(req.body.pass),
     rol: req.body.rol
   };
   UserModel.updateUserById(id, userUpdate);

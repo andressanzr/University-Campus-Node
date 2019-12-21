@@ -25,6 +25,29 @@ router.get("/signup", (req, res, next) => {
   res.render("signUp", { message: req.flash("info") });
 });
 
+router.get("/addUserAdmin", (req, res, next) => {
+  if (req.session.userSession && req.session.userSession.rol == 1) {
+    res.render("addUserAdmin");
+  } else {
+    noPrivileges(res);
+  }
+});
+
+router.get("/addSubjectAdmin", async (req, res, next) => {
+  if (req.session.userSession && req.session.userSession.rol == 1) {
+    var allStudents = await UserModel.findUsersByRol(3);
+    var allTeachers = await UserModel.findUsersByRol(2);
+    await res.render("addSubjectAdmin", {
+      userSession: req.session.userSession,
+      todosAlumnos: allStudents,
+      todosProfesores: allTeachers,
+      title: "Añadir Asignaturas"
+    });
+  } else {
+    noPrivileges(res);
+  }
+});
+
 router.get("/administrarUsuarios", async (req, res, next) => {
   if (req.session.userSession && req.session.userSession.rol == 1) {
     var usersList = await UserModel.findUsers();
@@ -38,6 +61,18 @@ router.get("/administrarUsuarios", async (req, res, next) => {
     noPrivileges(res);
   }
 });
+router.get("/administrarAsignaturasProfesor", async (req, res, next) => {
+  if (req.session.userSession && req.session.userSession.rol == 2) {
+    var subjectList = await SubjectModel.findSubjectsPopulateUsers();
+    res.render("administrarAsignaturasProfesor", {
+      userSession: req.session.userSession,
+      subjectList: subjectList,
+      title: "Administrar Asignaturas"
+    });
+  } else {
+    noPrivileges(res);
+  }
+});
 router.get("/administrarAsignaturas", async (req, res, next) => {
   if (req.session.userSession && req.session.userSession.rol == 1) {
     var subjectList = await SubjectModel.findSubjectsPopulateUsers();
@@ -45,6 +80,19 @@ router.get("/administrarAsignaturas", async (req, res, next) => {
       userSession: req.session.userSession,
       subjectList: subjectList,
       title: "Administrar Asignaturas"
+    });
+  } else {
+    noPrivileges(res);
+  }
+});
+router.get("/verAsignaturasAlumno", async (req, res, next) => {
+  if (req.session.userSession && req.session.userSession.rol == 3) {
+    var subjectList = await SubjectModel.findStudentsSubjectsByStudentId(
+      req.session.userSession.id
+    );
+
+    res.render("verAsignaturasAlumno", {
+      nombre: req.session.userSession.nombre
     });
   } else {
     noPrivileges(res);

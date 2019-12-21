@@ -4,20 +4,37 @@
 </div>
 <div class="form-group">
     <label for="nombre">Info Instalar: </label>
-    <textarea type="text" name="infoInstalar" id="" value="<%=  %>" class="form-control" />
-    </div>
+    <textarea type="text" name="infoInstalar" id="" value="" class="form-control"
+        rows="5"><%= subject.infoInstalar%>  </textarea>
+</div>
 <div class="form-group">
     <label for="nombre">Enlaces: </label>
-    <ul>
-
+    <ul id="listaEnlaces">
+        <% subject.enlaces.map(enlace =>{ %>
+        <li><a href="<%= enlace %>"> <%= enlace %></a></li>
+        <% }) %>
     </ul>
-    <input type="text" name="nombre" id="" value="<%=  %>"class="form-control" />
+
+    <input type="text" id="inputEnlace" class="form-control" />
+
 </div>
-<div class="form-group">
-    <label for="nombre">Nombre: </label>
-    <input type="text" name="nombre" id="" value="<%=  %>"class="form-control" />
-</div>
-<div class="form-group">
-    <label for="nombre">Nombre: </label>
-    <input type="text" name="nombre" id="" value="<%=  %>" class="form-control" />
-</div>
+<script>
+    $(document).ready(() => {
+        $(window).keydown((e) => {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                return false;
+            }
+        })
+    })
+    $("#inputEnlace").on("keydown", (e) => {
+        if (e.which == 13) {
+            if ($("#inputEnlace").val().length > 8) {
+                var link = $("#inputEnlace").val();
+                $("#listaEnlaces").append(`<li><input type="hidden" name="enlace" value="${link}" /><a target="_blank"
+        href="${link}">${link}</a></li>`);
+                $("#inputEnlace").val(' ')
+            }
+        }
+    })
+</script>
