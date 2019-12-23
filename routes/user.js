@@ -20,8 +20,6 @@ router.post("/insert", async (req, res, next) => {
     var pass = cryptr.encrypt(req.body.pass);
     var rol = req.body.rol;
     await UserModel.createUser(nombre, apellido, email, pass, rol);
-    req.flash("info", "Registered successfully!");
-    req.flash("type", "success");
     if (req.session.userSession && req.session.userSession.rol == 1) {
       res.redirect("/administrarUsuarios");
     } else {
@@ -49,6 +47,7 @@ router.post("/login", async (req, res, next) => {
   var userLogin = await UserModel.loginUser(email, pass);
   if (userLogin) {
     var userSession = {
+      id: userLogin.id,
       email: userLogin.email,
       nombre: userLogin.nombre,
       apellido: userLogin.apellido,

@@ -49,6 +49,7 @@ router.post("/editForward", async (req, res, next) => {
       todosProfesores: allTeachers
     });
   } else if (req.session.userSession.rol == 2) {
+    console.log("id subj" + id);
     // render teachers edit subject
     var subjectEditSearch = await SubjectModel.findSubjectByIdPopulateUsers(id);
     res.render("editSubjectProfe", { subjectEdit: subjectEditSearch });
@@ -72,7 +73,7 @@ router.post("/edit", async (req, res, next) => {
   } else if (req.session.userSession.rol == 2) {
     var nombre = req.body.nombre;
     var infoInsta = req.body.infoInstalar;
-    var enlaces = req.body.enlaces;
+    var enlaces = req.body.enlace;
 
     await SubjectModel.updateNombreInfoEnlacesById(
       id,

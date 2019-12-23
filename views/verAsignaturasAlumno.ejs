@@ -1,2 +1,13 @@
 <%- include("./layouts/header", { title: "Ver Asignatura"}); %>
-<h1>Hola ! <%= nombre %></h1>
+<%- include("./layouts/navbarAlumno", { activo: "asig"}); %>
+<div class="container center">
+    <h1>Hola <%= nombre %> !</h1>
+    <h3>Tus asignaturas:</h3>
+    <% if(subjectList){ %>
+    <% subjectList.map( subject =>{ %>
+    <%-include("./templates/subjectAlumno", { subject: subject}) %>
+    <% }) %>
+    <% }else{ %>
+    <p>No estás matriculado en ninguna asignatura</p>
+    <% } %>
+</div>

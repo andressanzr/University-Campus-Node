@@ -1,0 +1,32 @@
+<div class="jumbotron">
+    <h1 class="display-4"><%= subject.nombre %></h1>
+    <p class="lead">Profesor:
+        <% if(subject.profResponsables){ %>
+        <% subject.profResponsables.map(profe =>{ %>
+        <h5>
+            <%= profe.nombre  %>
+            <%= profe.apellido  %>
+        </h5>
+        <%  }) %>
+        <% } %>
+    </p>
+    <p class="lead">Alumnos:
+        <% if(subject.alumnos){ %>
+        <% subject.alumnos.map(alumno =>{ %>
+        <h5>
+            <%= alumno.nombre %>
+            <%= alumno.apellido %>
+        </h5>
+        <%  }) %>
+        <% } %></p>
+    <hr class="my-4">
+    <p><%= subject.infoInstalar %></p>
+    <p class="lead">
+        <ul>
+            <% if(subject.enlaces){ %>
+            <% subject.enlaces.map( enlace =>{ %>
+            <li><a href="<%= enlace %>"><%= enlace %></a></li>
+            <% }) } %>
+        </ul>
+    </p>
+</div>

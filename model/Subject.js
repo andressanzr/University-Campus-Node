@@ -38,13 +38,27 @@ module.exports = {
   },
   /// TODO profesores mostrar solo us asignaturas
   findStudentsSubjectsByStudentId: async id => {
-    var subjList = await Subject.find({ alumnos: id }, (err, res) => {
-      console.log("err" + err);
-      console.log("res " + res);
+    var subjList = await Subject.find(
+      { alumnos: { $in: mongoose.Types.ObjectId(id) } },
+      (err, res) => {
+        console.log("err" + err);
+        //console.log("res " + res);
+      }
+    ).populate({
+      path: "alumnos profResponsables"
     });
+    return subjList;
   },
-  findSubjectsPopulateUsers: async () => {
+  findSubjectsPopulateUsersAdmin: async () => {
     var subjectList = await Subject.find().populate({
+      path: "alumnos profResponsables"
+    });
+    return subjectList;
+  },
+  findSubjectsPopulateUsersByTeacherId: async id => {
+    var subjectList = await Subject.find({
+      profResponsables: mongoose.Types.ObjectId(id)
+    }).populate({
       path: "alumnos profResponsables"
     });
     return subjectList;

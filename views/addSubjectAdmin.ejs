@@ -90,8 +90,8 @@
         if (e.which == 13) {
             if ($("#inputEnlace").val().length > 8) {
                 var link = $("#inputEnlace").val();
-                $("#listaEnlaces").append(`<li><input type="hidden" name="enlace" value ="${link}"/><a target="_blank" href="${link}">${link}</a></li>`);
-                $("#inputEnlace").val(' ')
+                $("#listaEnlaces").append(`<li><input type="hidden" name="enlace" value ="https://${link}"/><a target="_blank" href="https://${link}">${link}</a></li>`);
+                $("#inputEnlace").val('')
             }
         }
     })

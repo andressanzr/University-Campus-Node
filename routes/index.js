@@ -63,7 +63,10 @@ router.get("/administrarUsuarios", async (req, res, next) => {
 });
 router.get("/administrarAsignaturasProfesor", async (req, res, next) => {
   if (req.session.userSession && req.session.userSession.rol == 2) {
-    var subjectList = await SubjectModel.findSubjectsPopulateUsers();
+    console.log("sess id " + req.session.userSession.id);
+    var subjectList = await SubjectModel.findSubjectsPopulateUsersByTeacherId(
+      req.session.userSession.id
+    );
     res.render("administrarAsignaturasProfesor", {
       userSession: req.session.userSession,
       subjectList: subjectList,
@@ -75,7 +78,7 @@ router.get("/administrarAsignaturasProfesor", async (req, res, next) => {
 });
 router.get("/administrarAsignaturas", async (req, res, next) => {
   if (req.session.userSession && req.session.userSession.rol == 1) {
-    var subjectList = await SubjectModel.findSubjectsPopulateUsers();
+    var subjectList = await SubjectModel.findSubjectsPopulateUsersAdmin();
     res.render("administrarAsignaturas", {
       userSession: req.session.userSession,
       subjectList: subjectList,
@@ -90,9 +93,10 @@ router.get("/verAsignaturasAlumno", async (req, res, next) => {
     var subjectList = await SubjectModel.findStudentsSubjectsByStudentId(
       req.session.userSession.id
     );
-
+    console.log(subjectList);
     res.render("verAsignaturasAlumno", {
-      nombre: req.session.userSession.nombre
+      nombre: req.session.userSession.nombre,
+      subjectList: subjectList
     });
   } else {
     noPrivileges(res);

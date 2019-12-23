@@ -15,8 +15,11 @@ var ejs = require("ejs");
 
 const mongoose = require("mongoose");
 
+const dbPass = require("./credentials/mongoCloud").psw;
+
 // connect to MongoDB
-var url = "mongodb://localhost:27017/entregable";
+var url = `mongodb+srv://admin:${dbPass}@clustercampus-5u7au.mongodb.net/entregable?retryWrites=true&w=majority`;
+
 mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
