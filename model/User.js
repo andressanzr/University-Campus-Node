@@ -68,7 +68,7 @@ module.exports = {
     return userFinded;
   },
   loginUser: async (email, pass) => {
-    var findedUser;
+    var findedUser = null;
     await User.findOne({ email: email }, (err, user) => {
       findedUser = user;
     });

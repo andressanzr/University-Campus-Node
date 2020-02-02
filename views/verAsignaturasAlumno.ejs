@@ -2,10 +2,10 @@
 <%- include("./layouts/navbarAlumno", { activo: "asig"}); %>
 <div class="container center">
     <h1>Hola <%= nombre %> !</h1>
+    <% if(subjectList.length!=0){ %>
     <h3>Tus asignaturas:</h3>
-    <% if(subjectList){ %>
     <% subjectList.map( subject =>{ %>
-    <%-include("./templates/subjectAlumno", { subject: subject}) %>
+    <%-include("./templates/subjectAlumno", { subject: subject, filesList: filesList }) %>
     <% }) %>
     <% }else{ %>
     <p>No estás matriculado en ninguna asignatura</p>

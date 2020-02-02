@@ -1,5 +1,6 @@
 var express = require("express");
 var session = require("express-session");
+var fs = require("fs");
 
 var router = express.Router();
 
@@ -93,10 +94,26 @@ router.get("/verAsignaturasAlumno", async (req, res, next) => {
     var subjectList = await SubjectModel.findStudentsSubjectsByStudentId(
       req.session.userSession.id
     );
-    console.log(subjectList);
+    var filesArray = [];
+    var i = 0;
+    subjectList.map(subj => {
+      if (fs.existsSync(`./files/subjectFiles/${subj._id}`)) {
+        filesArray[i] = {
+          subjId: 0,
+          files: null
+        };
+        filesArray[i].subjId = subj._id;
+        filesArray[i].files = fs.readdirSync(
+          `./files/subjectFiles/${subj._id}`
+        );
+        i++;
+      }
+    });
+    console.log(filesArray);
     res.render("verAsignaturasAlumno", {
       nombre: req.session.userSession.nombre,
-      subjectList: subjectList
+      subjectList: subjectList,
+      filesList: filesArray
     });
   } else {
     noPrivileges(res);

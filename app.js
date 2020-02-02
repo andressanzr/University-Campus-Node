@@ -10,8 +10,11 @@ var flash = require("express-flash");
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
 var subjectRouter = require("./routes/subject");
+var fileUploadRouter = require("./routes/uploadFile");
 
 var ejs = require("ejs");
+
+const fileUpload = require("express-fileupload");
 
 const mongoose = require("mongoose");
 
@@ -50,6 +53,7 @@ app.use(
 // view engine setup
 app.set("view engine", "ejs");
 
+app.use(fileUpload());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -62,6 +66,8 @@ app.use(flash());
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/subject", subjectRouter);
+app.use("/fileUpload", fileUploadRouter);
+app.use("/files", express.static(path.join(__dirname, "files")));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

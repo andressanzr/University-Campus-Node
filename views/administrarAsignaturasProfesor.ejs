@@ -6,6 +6,7 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Tipo Plan de estudio</th>
             <th>Nombre</th>
             <th>InfoInstalar</th>
             <th>Enlaces</th>
@@ -17,6 +18,6 @@
     <tbody>
         <% subjectList.map( subjectMap =>{ %>
         <%-include("./templates/subjectTableProfe", { subject: subjectMap }); %>
-        <% }) %>
+        <% }); %>
     </tbody>
 </table>

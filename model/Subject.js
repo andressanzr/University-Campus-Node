@@ -4,8 +4,11 @@ const Schema = mongoose.Schema;
 
 const UserModel = require("./User");
 
+const EmailModel = require("./Email");
+
 const subjectSchema = new Schema(
   {
+    tipoPlanEstudio: { type: String, required: true },
     nombre: { type: String, required: true },
     infoInstalar: { type: String, required: true },
     enlaces: Array,
@@ -18,8 +21,16 @@ const subjectSchema = new Schema(
 const Subject = mongoose.model("Subject", subjectSchema);
 
 module.exports = {
-  createSubject: (nombre, infoInstalar, enlaces, profResponsables, alumnos) => {
+  createSubject: (
+    tipoPlanEstudio,
+    nombre,
+    infoInstalar,
+    enlaces,
+    profResponsables,
+    alumnos
+  ) => {
     var subjectCreate = new Subject({
+      tipoPlanEstudio: tipoPlanEstudio,
       nombre: nombre,
       infoInstalar: infoInstalar,
       enlaces: enlaces,
@@ -71,13 +82,33 @@ module.exports = {
       path: "alumnos profResponsables"
     });
   },
-  updateTeachersStudentsById: async (id, listTeachers, listStudents) => {
+  updateTeachersStudentsById: async (
+    id,
+    tipoPlanEstudio,
+    listTeachers,
+    listStudents
+  ) => {
     await Subject.findByIdAndUpdate(
       id,
-      { profResponsables: listTeachers, alumnos: listStudents },
+      {
+        tipoPlanEstudio: tipoPlanEstudio,
+        profResponsables: listTeachers,
+        alumnos: listStudents
+      },
       (err, res) => {
         console.log("error " + err);
         console.log("result " + res);
+        listStudents.map(async idUser => {
+          var user = await UserModel.findUserById(idUser);
+          Subject.findById(id, (err, res) => {
+            console.log(res.nombre);
+            EmailModel.sendEmail(
+              user.email,
+              `Modification on subject ${res.nombre}`,
+              `<h1>Hi ${user.nombre}! </h1><p>Your Subject <b>${res.nombre}</b> has been modified, check out the modifications.</p><p>Notification from Node.js Campus</p>`
+            );
+          });
+        });
       }
     );
   },

@@ -1,4 +1,9 @@
 <div class="form-group">
+    Selecciona un plan de estudios:
+    <select class="form-control" name="tipoAsig">
+        <option selected value="Grado">Grado</option>
+        <option value="Master">Master</option>
+    </select>
     <label for="">Alumnos: </label>
     <ul id="alumnosAsignatura">
         <% if(subjectEdit.alumnos){ %>
@@ -66,5 +71,6 @@
     }
     addSelectItemsToList("alumnos");
     addSelectItemsToList("profesores");
+
 
 </script>

@@ -5,7 +5,7 @@
     <h1>Hola <%= userSession.nombre %>!</h1>
     <% if(message.length == 1) { %>
 
-    <div class="alert alert-<%= tipo %> alert-dismissible fade show" role="alert">
+    <div class="alert alert-<%= tipo %> alert-dismissible fade show" role="alert" style="margin: auto;">
         <%= message  %>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -32,3 +32,7 @@
     </tbody>
 </table>
 <a href="/addUserAdmin"><button type="button" class="btn btn-dark">Añadir usuarios</button></a>
+<form action="/fileUpload/users" method="post" enctype="multipart/form-data" style="margin-top: 20px;">
+    <input type="file" name="file">
+    <button class="btn btn-dark" type="submit">Añadir usuarios desde .csv</button>
+</form>

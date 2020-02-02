@@ -2,7 +2,7 @@ var express = require("express");
 var session = require("express-session");
 
 var router = express.Router();
-const UserModel = require("..\\model\\User");
+const UserModel = require("../model/User");
 
 const Cryptr = require("cryptr");
 const cryptr = new Cryptr("t45AS45asf");

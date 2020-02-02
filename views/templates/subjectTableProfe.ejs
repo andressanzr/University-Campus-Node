@@ -1,31 +1,26 @@
 <tr>
-    <td><%= subject.nombre %></td>
-    <td><%= subject.infoInstalar %></td>
-    <td><%= subject.enlaces %></td>
-    <td>
-        <% if(subject.profResponsables){ %>
-        <% subject.profResponsables.map(profe =>{ %>
-        <div>
-            <%= profe.nombre  %>
-            <%= profe.apellido  %>
-        </div>
-        <%  }) %>
-        <% } %>
-    </td>
-    <td>
-        <% if(subject.alumnos){ %>
-        <% subject.alumnos.map(alumno =>{ %>
-        <div>
-            <%= alumno.nombre %>
-            <%= alumno.apellido %>
-        </div>
-        <%  }) %>
-        <% } %>
-    </td>
-    <td>
-        <form action="/subject/editForward" method="post">
-            <input type="hidden" name="id" value="<%= subject._id %>">
-            <button type="submit" class="btn btn-primary">Edit</button>
-        </form>
-    </td>
+  <td><%= subject.tipoPlanEstudio %></td>
+  <td><%= subject.nombre %></td>
+  <td><%= subject.infoInstalar %></td>
+  <td><%= subject.enlaces %></td>
+  <td>
+    <% if(subject.profResponsables){ subject.profResponsables.map(profe =>{ %>
+    <div>
+      <%= profe.nombre %> <%= profe.apellido %>
+    </div>
+    <% }); } %>
+  </td>
+  <td>
+    <% if(subject.alumnos){ %> <% subject.alumnos.map(alumno =>{ %>
+    <div>
+      <%= alumno.nombre %> <%= alumno.apellido %>
+    </div>
+    <% }) %> <% } %>
+  </td>
+  <td>
+    <form action="/subject/editForward" method="post">
+      <input type="hidden" name="id" value="<%= subject._id %>" />
+      <button type="submit" class="btn btn-primary">Edit</button>
+    </form>
+  </td>
 </tr>

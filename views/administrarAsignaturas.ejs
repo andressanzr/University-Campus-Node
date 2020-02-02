@@ -6,6 +6,7 @@
 <table class="table">
   <thead>
     <tr>
+      <th>Tipo Plan de estudio</th>
       <th>Nombre</th>
       <th>InfoInstalar</th>
       <th>Enlaces</th>
@@ -23,3 +24,8 @@
 </table>
 
 <a href="/addSubjectAdmin"><button type="button" class="btn btn-dark">Añadir asignaturas</button></a>
+
+<form action="/fileUpload/subjects" method="post" enctype="multipart/form-data" style="margin-top: 20px;">
+  <input type="file" name="file">
+  <button class="btn btn-dark" type="submit">Añadir asignaturas desde .csv sin profesores ni alumnos</button>
+</form>

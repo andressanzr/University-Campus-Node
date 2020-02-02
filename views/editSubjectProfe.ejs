@@ -7,4 +7,26 @@
         <%- include("./templates/subjectEditProfe", { subject:subjectEdit }) %>
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
+    <% if(ficheros){ %>
+    <div class="container center" style="text-align: center;">
+        <h3>Archivos</h3>
+        <% ficheros.map(fichero =>{ %>
+        <img width="50px" src="/images/fileIcon.png" />
+        <p><a href="<%= route + fichero %>" class=""><%= fichero %></a></p>
+        <form action="/fileUpload/deleteFile" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="ruta" value="<%= route + fichero %>">
+            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+        </form>
+
+        <% }) %>
+    </div>
+    <% } %>
+    <div class="form-group">
+        <form action="/fileUpload/subjectFiles" method="post" enctype="multipart/form-data" style="margin-top: 20px;">
+            <input type="hidden" name="idSubject" value="<%= subjectEdit._id %>" />
+            <input type="file" name="file">
+            <button class="btn btn-dark" type="submit">Añadir archivos</button>
+        </form>
+    </div>
+
 </div>
