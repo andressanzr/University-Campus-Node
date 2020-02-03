@@ -1,0 +1,14 @@
+<%- include("./layouts/header", {title:"Sugerencias"}) %>
+<%- include("./layouts/navbarAdmin", { activo : "sugerencias"}) %>
+<div class="container center">
+    <h1>Sugerencias</h1>
+    <% if(sugerencias.length>0){ %>
+
+    
+    <% sugerencias.map( sugerencia =>{ %>
+        <%-include("./templates/suggestionCard", { suggestion : sugerencia }) %>
+    <% }) %>
+    <% }else{%>
+        <p>No hay sugerencias</p>
+    <% } %> 
+</div>

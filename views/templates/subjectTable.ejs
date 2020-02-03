@@ -1,9 +1,11 @@
 <tr>
     <td><%= subject.tipoPlanEstudio %></td>
     <td><%= subject.nombre %></td>
-    <td><%= subject.nombre %></td>
     <td><%= subject.infoInstalar %></td>
-    <td><%= subject.enlaces %></td>
+    <td><% subject.enlaces.map(enlace =>{ %>
+        <p><a href=<%= enlace %> target="_blank"><%= enlace %></a></p>
+    <% }) %>
+    </td>
     <td>
         <% if(subject.profResponsables){ %>
         <% subject.profResponsables.map(profe =>{ %>

@@ -47,7 +47,6 @@ module.exports = {
     var subj = await Subject.find();
     console.log(subj);
   },
-  /// TODO profesores mostrar solo us asignaturas
   findStudentsSubjectsByStudentId: async id => {
     var subjList = await Subject.find(
       { alumnos: { $in: mongoose.Types.ObjectId(id) } },
@@ -98,7 +97,7 @@ module.exports = {
       (err, res) => {
         console.log("error " + err);
         console.log("result " + res);
-        listStudents.map(async idUser => {
+        res.alumnos.map(async idUser => {
           var user = await UserModel.findUserById(idUser);
           Subject.findById(id, (err, res) => {
             console.log(res.nombre);
@@ -119,6 +118,17 @@ module.exports = {
       (err, res) => {
         console.log("error " + err);
         console.log("result " + res);
+        res.listStudents.map(async idUser => {
+          var user = await UserModel.findUserById(idUser);
+          Subject.findById(id, (err, res) => {
+            console.log(res.nombre);
+            EmailModel.sendEmail(
+              user.email,
+              `Modification on subject ${res.nombre}`,
+              `<h1>Hi ${user.nombre}! </h1><p>Your Subject <b>${res.nombre}</b> has been modified, check out the modifications.</p><p>Notification from Node.js Campus</p>`
+            );
+          });
+        });
       }
     );
   },

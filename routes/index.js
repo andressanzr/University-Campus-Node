@@ -6,6 +6,7 @@ var router = express.Router();
 
 const UserModel = require("../model/User");
 const SubjectModel = require("../model/Subject");
+const SugerenciaModel = require("../model/Sugerencia");
 
 /* GET home page. */
 router.get("/", function(req, res, next) {
@@ -33,6 +34,26 @@ router.get("/addUserAdmin", (req, res, next) => {
     noPrivileges(res);
   }
 });
+
+router.get("/sugerenciasAdmin", async (req, res) => {
+  if (req.session.userSession && req.session.userSession.rol == 1) {
+    var sugerenciasBuscar = await SugerenciaModel.findSugerencias();
+    console.log("sug "+sugerenciasBuscar)
+    res.render("verSugerencias", { sugerencias: sugerenciasBuscar});
+  }
+});
+
+router.get("/sugerencia", async (req, res) => {
+  res.render("addSugerencia");
+});
+
+router.post("/addSugerencia" , (req, res) =>{
+  var nombre = req.body.nombre;
+  var mensaje = req.body.mensaje;
+  
+  SugerenciaModel.createSugerencia(nombre, mensaje);
+  res.redirect("/sugerencia");
+})
 
 router.get("/addSubjectAdmin", async (req, res, next) => {
   if (req.session.userSession && req.session.userSession.rol == 1) {

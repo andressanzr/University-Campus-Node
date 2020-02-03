@@ -1,0 +1,16 @@
+<%- include("./layouts/header", {title:"Sugerencias"}) %>
+<%- include("./layouts/navbarAlumno", { activo: "sugerencias"}); %>
+<div class="container center">
+    <h1>Añadir Sugerencia</h1>
+    <form action="/addSugerencia" method="post" style="width: 70%;">
+        <div class="form-group">
+            <label for="nombre">Nombre: </label>
+            <input type="text" name="nombre" id="" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Mensaje: </label>
+            <textarea type="text" name="mensaje" id="" value="" class="form-control" rows="5" cols="10"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+</div>
