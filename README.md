@@ -1,6 +1,6 @@
 # University-Campus-Node
-University campus made with <b>Node.js</b>(<b>EJS templating engine</b>) , <b>Mongoose</b> library using <b>MongoDB Cloud</b>.<br>
-Includes file upload functionality for Teachers.<br>
+University campus made with <b>Node.js</b>(<b>EJS templating engine</b>) , <b>Mongoose</b> library using <b>MongoDB Cloud</b>.<br><br>
+Includes file upload functionality for Teachers.<br><br>
 There are 3 types of Users: <b>Administrators, teachers and students</b>. Each type of user has it´s own permissions with different functionalities.<br>
 Administrators can edit and add Users and Subjects.<br>
 Teachers can edit their Subjects.<br>
